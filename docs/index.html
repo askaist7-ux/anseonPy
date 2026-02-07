@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flask 템플릿 프로젝트</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        
+        .info {
+            background: #f0f3ff;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+            border-radius: 5px;
+        }
+        
+        .info p {
+            color: #555;
+            margin: 8px 0;
+            line-height: 1.6;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .status {
+            margin-top: 20px;
+            padding: 10px;
+            background: #e8f5e9;
+            border-radius: 5px;
+            color: #2e7d32;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 Flask 템플릿 프로젝트</h1>
+        <p class="subtitle">성공적으로 실행되었습니다!</p>
+        
+        <div class="info">
+            <p><strong>🚀 프로젝트 정보:</strong></p>
+            <p>이것은 Flask와 HTML 템플릿을 사용하는 간단한 웹 애플리케이션입니다.</p>
+            <p>현재 시간: <strong id="currentTime"></strong></p>
+        </div>
+        
+        <div class="button-group">
+            <button onclick="testAPI()">API 테스트</button>
+            <button onclick="showTime()">시간 업데이트</button>
+            <button onclick="resetForm()">초기화</button>
+            <button onclick="goToNaver()">네이버 이동</button>
+        </div>
+        
+        <div id="apiResponse"></div>
+        <div class="status">✅ 템플릿 렌더링 성공!</div>
+    </div>
+    
+    <script>
+        function showTime() {
+            const now = new Date();
+            const timeString = now.toLocaleString('ko-KR');
+            document.getElementById('currentTime').textContent = timeString;
+        }
+        
+        function testAPI() {
+            fetch('/api/test')
+                .then(response => response.json())
+                .then(data => {
+                    const responseDiv = document.getElementById('apiResponse');
+                    responseDiv.innerHTML = `<div class="info"><p><strong>API 응답:</strong></p><p>${JSON.stringify(data, null, 2)}</p></div>`;
+                })
+                .catch(error => {
+                    const responseDiv = document.getElementById('apiResponse');
+                    responseDiv.innerHTML = `<div class="info"><p style="color: #d32f2f;"><strong>에러:</strong> ${error.message}</p></div>`;
+                });
+        }
+        
+        function resetForm() {
+            document.getElementById('apiResponse').innerHTML = '';
+            showTime();
+        }
+        
+        function goToNaver() {
+            window.location.href = 'https://www.naver.com';
+        }
+        
+        // 페이지 로드 시 시간 표시
+        showTime();
+    </script>
+</body>
+</html>
